@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>devsite-var example</title>
+  </head>
+    <style>
+      devsite-var[scope="PROJECT_ID"] {
+        display: inline-block;
+        border: 1px solid #ccc;
+        padding: 4px;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      devsite-var[scope="PROJECT_ID"][editing] {
+        background-color: #f0f0f0;
+      }
+
+      devsite-var[scope="PROJECT_ID"] .devsite-var-wrapper {
+        display: flex;
+        align-items: center;
+      }
+
+      devsite-var[scope="PROJECT_ID"] var {
+        display: inline-block;
+        margin-right: 4px;
+      }
+
+      devsite-var[scope="PROJECT_ID"] input[type="text"] {
+        border: none;
+        outline: none;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        margin-right: 4px;
+      }
+
+      devsite-var[scope="PROJECT_ID"] button {
+        border: none;
+        background-color: transparent;
+        outline: none;
+        cursor: pointer;
+      }
+
+      devsite-var[scope="PROJECT_ID"] .devsite-icon-edit::before {
+        content: "edit";
+      }
+
+      devsite-var[scope="PROJECT_ID"] .devsite-icon-close::before {
+        content: "close";
+      }
+    </style>
+  <body>
+    <devsite-var ready="" translate="no" is-upgraded="" scope="PROJECT_ID" tabindex="0">
+      <span class="devsite-var-wrapper">
+        <span class="devsite-var-input-wrapper">
+          <button class="material-icons devsite-icon-close" tabindex="-1"></button>
+        </span>
+        <var spellcheck="false" is-upgraded="" data-title="Edit PROJECT_ID">PROJECT_ID
+          <button class="material-icons devsite-icon-edit" tabindex="-1"></button>
+        </var>
+      </span>
+    </devsite-var>
+
+    <script>
+      const devsiteVarElement = document.querySelector('devsite-var[scope="PROJECT_ID"]');
+
+      const inputWrapperElement = devsiteVarElement.querySelector('.devsite-var-input-wrapper');
+      const inputElement = document.createElement('input');
+      inputElement.setAttribute('type', 'text');
+      inputElement.setAttribute('spellcheck', 'false');
+      inputWrapperElement.appendChild(inputElement);
+
+      const varElement = devsiteVarElement.querySelector('var');
+      const editButtonElement = varElement.querySelector('.devsite-icon-edit');
+      const closeButtonElement = varElement.querySelector('.devsite-icon-close');
+
+      varElement.addEventListener('click', function() {
+        inputElement.value = varElement.textContent.trim();
+        devsiteVarElement.setAttribute('editing', '');
+        inputElement.focus();
+      });
+
+      inputElement.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+          varElement.textContent = inputElement.value.trim();
+          devsiteVarElement.removeAttribute('editing');
+        } else if (event.key === 'Escape') {
+          devsiteVarElement.removeAttribute('editing');
+        }
+      });
+
+      editButtonElement.addEventListener('click', function(event) {
+        varElement.click();
+      });
+
+      closeButtonElement.addEventListener('click', function(event) {
+        devsiteVarElement.removeAttribute('editing');
+      });
+    </script>
+  </body>
+</html>
